@@ -2,25 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 
 interface CommentsProps {
   theme: 'light' | 'dark';
+  postId?: string;
 }
 
-export const Comments: React.FC<CommentsProps> = ({ theme }) => {
+export const Comments: React.FC<CommentsProps> = ({ theme, postId }) => {
   const commentsRef = useRef<HTMLDivElement>(null);
-  const [currentPath, setCurrentPath] = useState(window.location.hash);
+  const [currentIdentifier, setCurrentIdentifier] = useState(postId || window.location.hash);
 
   useEffect(() => {
-    // 监听路径变化
-    const handlePathChange = () => {
-      setCurrentPath(window.location.hash);
-    };
-
-    // 监听 hashchange 事件（HashRouter 路径变化）
-    window.addEventListener('hashchange', handlePathChange);
-
-    return () => {
-      window.removeEventListener('hashchange', handlePathChange);
-    };
-  }, []);
+    setCurrentIdentifier(postId || window.location.hash);
+  }, [postId]);
 
   useEffect(() => {
     if (!commentsRef.current) return;
@@ -34,7 +25,7 @@ export const Comments: React.FC<CommentsProps> = ({ theme }) => {
     script.setAttribute("data-repo-id", "R_kgDOQvKQHQ");
     script.setAttribute("data-category", "Announcements");
     script.setAttribute("data-category-id", "DIC_kwDOQvKQHC4C0RkX");
-    script.setAttribute("data-mapping", "url");
+    script.setAttribute("data-mapping", "pathname");
     script.setAttribute("data-strict", "0");
     script.setAttribute("data-reactions-enabled", "1");
     script.setAttribute("data-emit-metadata", "0");
@@ -46,7 +37,7 @@ export const Comments: React.FC<CommentsProps> = ({ theme }) => {
     script.async = true;
 
     commentsRef.current.appendChild(script);
-  }, [currentPath]); // 当路径变化时重新加载评论
+  }, [currentIdentifier]); // 当标识符变化时重新加载评论
 
   return (
     <div className="mt-12 w-full animate-fade-in">
