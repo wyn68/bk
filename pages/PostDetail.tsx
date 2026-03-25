@@ -337,7 +337,7 @@ export const PostDetail: React.FC = () => {
                 )}
 
                 {/* 评论区 */}
-                <Comments theme={context?.theme || 'light'} />
+                <Comments theme={context?.theme || 'light'} postId={id} />
             </div>
 
             {/* Sidebar TOC (Desktop Only) */}
